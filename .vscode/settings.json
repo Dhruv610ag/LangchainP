@@ -1,8 +1,12 @@
 {
     "cSpell.words": [
         "dotenv",
+        "fastapi",
+        "groq",
         "LANGCHAIN",
+        "langserve",
         "Ollama",
-        "streamlit"
+        "streamlit",
+        "uvicorn"
     ]
 }
