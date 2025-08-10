@@ -2,27 +2,31 @@ from fastapi import FastAPI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
-import os
 from langserve import add_routes
 from dotenv import load_dotenv
+import os
+
+# Load environment variables
 load_dotenv()
 
-groq_api_key =os.getenv("GROQ_API_KEY")
-model=ChatGroq(model="Gemma2-9b-It",groq_api_key=groq_api_key)
+# Check for API key
+groq_api_key = os.getenv("GROQ_API_KEY")
+assert groq_api_key, "Missing GROQ_API_KEY in .env file"#raise an error if the api key is not found 
 
-# 1. Create prompt template
-system_template = "Translate the following into {language}:"
+# Initialize model (corrected model name)
+model = ChatGroq(model="gemma2-9b-it", groq_api_key=groq_api_key) #type:ignore # take the model from the docs from the original side of what you are using 
+
+# Prompt template
 prompt_template = ChatPromptTemplate.from_messages([
-    ('system', system_template),
-    ('user', '{text}')
+    ("system", "Translate the following into {language}:"),#tells the system what to do 
+    ("user", "{text}")# take the input from the user that the system will take the input from the users
 ])
 
-parser=StrOutputParser()
+# Output parser
+parser = StrOutputParser()
 
-##create chain
-chain=prompt_template|model|parser
-
-
+# Create chain
+chain = prompt_template | model | parser 
 
 ## App definition
 app=FastAPI(title="Langchain Server",
@@ -36,8 +40,8 @@ add_routes(
     path="/chain"
 )
 
+#local host system 
 if __name__=="__main__":
     import uvicorn
-    uvicorn.run(app,host="127.0.0.1",port=8000)
-
+    uvicorn.run(app,host="127.0.0.1",port=4000)
 
