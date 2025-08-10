@@ -3,6 +3,7 @@
         "dotenv",
         "fastapi",
         "groq",
+        "Krish",
         "LANGCHAIN",
         "langserve",
         "Ollama",
