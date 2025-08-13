@@ -7,7 +7,12 @@
         "Krish",
         "LANGCHAIN",
         "langserve",
+        "Langsmith",
+        "llms",
+        "massistant",
         "Ollama",
+        "openai",
+        "repsonse",
         "streamlit",
         "uvicorn"
     ]
