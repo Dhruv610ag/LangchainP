@@ -1,18 +1,17 @@
 ## RAG Q&A Conversation With PDF Including Chat History
 import streamlit as st
-from langchain.chains import create_history_aware_retriever, create_retrieval_chain
+from langchain.chains import create_history_aware_retriever, create_retrieval_chain # retriever with the chat history 
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_chroma import Chroma
+from langchain_chroma import Chroma# chroma database is being used 
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_groq import ChatGroq
-from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_groq import ChatGroq 
+from langchain_core.runnables.history import RunnableWithMessageHistory#we will be able to make a q&a chatbot with the retriever history
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 import os
-
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -22,7 +21,7 @@ embeddings=HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 ## set up Streamlit 
 st.title("Conversational RAG With PDF uplaods and chat history")
-st.write("Upload Pdf's and chat with their content")
+st.write("Upload Pdf's and chat with their content any thing that will be present in the PDF's")
 
 ## Input the Groq API Key
 api_key=st.text_input("Enter your Groq API key:",type="password")
@@ -34,6 +33,7 @@ if api_key:
     ## chat interface
 
     session_id=st.text_input("Session ID",value="default_session")
+    
     ## statefully manage chat history
 
     if 'store' not in st.session_state:
@@ -43,8 +43,9 @@ if api_key:
     ## Process uploaded  PDF's
     if uploaded_files:
         documents=[]
+        #this next block of section is technically used for the file content to be read and also the name of the file which is uploaded by the users
         for uploaded_file in uploaded_files:
-            temppdf=f"./temp.pdf"
+            temppdf=f"./temp.pdf"  # noqa: F541
             with open(temppdf,"wb") as file:
                 file.write(uploaded_file.getvalue())
                 file_name=uploaded_file.name
@@ -53,12 +54,13 @@ if api_key:
             docs=loader.load()
             documents.extend(docs)
 
-    # Split and create embeddings for the documents
+    # Split and create embeddings for the documents and now the preprocessing part is done here
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=500)
         splits = text_splitter.split_documents(documents)
         vectorstore = Chroma.from_documents(documents=splits, embedding=embeddings)
         retriever = vectorstore.as_retriever()    
 
+        # This is basically 
         contextualize_q_system_prompt=(
             "Given a chat history and the latest user question"
             "which might reference context in the chat history, "
@@ -69,11 +71,11 @@ if api_key:
         contextualize_q_prompt = ChatPromptTemplate.from_messages(
                 [
                     ("system", contextualize_q_system_prompt),
-                    MessagesPlaceholder("chat_history"),
+                    MessagesPlaceholder("chat_history"),#created a placeholder for my chat history 
                     ("human", "{input}"),
                 ]
             )
-        
+        #this line specifically means that this retriever has a powerfull feature of this particular chat history where it will store all the information 
         history_aware_retriever=create_history_aware_retriever(llm,retriever,contextualize_q_prompt)
 
         ## Answer question
