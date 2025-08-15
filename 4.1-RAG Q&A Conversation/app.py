@@ -97,7 +97,7 @@ if api_key:
                     ("human", "{input}"),
                 ]
             )
-        
+        #crates a chain for passing information(list of documents) to the models
         question_answer_chain=create_stuff_documents_chain(llm,qa_prompt)
         rag_chain=create_retrieval_chain(history_aware_retriever,question_answer_chain)
 
