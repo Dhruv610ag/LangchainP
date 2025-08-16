@@ -1,9 +1,9 @@
 import streamlit as st
 from langchain_groq import ChatGroq
 from langchain_community.utilities import ArxivAPIWrapper,WikipediaAPIWrapper
-from langchain_community.tools import ArxivQueryRun,WikipediaQueryRun,DuckDuckGoSearchRun
+from langchain_community.tools import ArxivQueryRun,WikipediaQueryRun,DuckDuckGoSearchRun#this tool help us to search anything over the internet 
 from langchain.agents import initialize_agent,AgentType
-from langchain.callbacks import StreamlitCallbackHandler
+from langchain.callbacks import StreamlitCallbackHandler#this library will alow to communicate with the tools in it 
 import os
 from dotenv import load_dotenv
 
@@ -27,12 +27,14 @@ Try more LangChain 🤝 Streamlit Agent examples at [github.com/langchain-ai/str
 st.sidebar.title("Settings")
 api_key=st.sidebar.text_input("Enter your Groq API Key:",type="password")
 
+#creating the session state here 
 if "messages" not in st.session_state:
     st.session_state["messages"]=[
         {"role":"assisstant","content":"Hi,I'm a chatbot who can search the web. How can I help you?"}
     ]
 
 for msg in st.session_state.messages:
+    #will add all the information in the from of key value pairs
     st.chat_message(msg["role"]).write(msg['content'])
 
 if prompt:=st.chat_input(placeholder="What is machine learning?"):
