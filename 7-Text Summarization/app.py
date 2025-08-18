@@ -1,11 +1,12 @@
-import validators,streamlit as st
+import validators
+import streamlit as st # Validate Anything!
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import YoutubeLoader,UnstructuredURLLoader
 
 
-## sstreamlit APP
+## streamlit APP
 st.set_page_config(page_title="LangChain: Summarize Text From YT or Website", page_icon="🦜")
 st.title("🦜 LangChain: Summarize Text From YT or Website")
 st.subheader('Summarize URL')
@@ -16,13 +17,13 @@ st.subheader('Summarize URL')
 with st.sidebar:
     groq_api_key=st.text_input("Groq API Key",value="",type="password")
 
-generic_url=st.text_input("URL",label_visibility="collapsed")
+generic_url=st.text_input("URL",label_visibility="collapsed")#collapsed like this as we don't want to highlight that before we press enter 
 
-## Gemma Model USsing Groq API
-llm =ChatGroq(model="Gemma-7b-It", groq_api_key=groq_api_key)
+## Gemma Model Using Groq API
+llm =ChatGroq(model="llama-3.1-8b-instant", groq_api_key=groq_api_key)
 
 prompt_template="""
-Provide a summary of the following content in 300 words:
+Provide a summary of the following content in very elaborated manner so that the user should understand the complete meaning of the words:
 Content:{text}
 
 """
@@ -42,8 +43,7 @@ if st.button("Summarize the Content from YT or Website"):
                 if "youtube.com" in generic_url:
                     loader=YoutubeLoader.from_youtube_url(generic_url,add_video_info=True)
                 else:
-                    loader=UnstructuredURLLoader(urls=[generic_url],ssl_verify=False,
-                                                 headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"})
+                    loader=UnstructuredURLLoader(urls=[generic_url],ssl_verify=False,headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"})
                 docs=loader.load()
 
                 ## Chain For Summarization
@@ -52,5 +52,5 @@ if st.button("Summarize the Content from YT or Website"):
 
                 st.success(output_summary)
         except Exception as e:
-            st.exception(f"Exception:{e}")
+            st.exception(e) 
                     
