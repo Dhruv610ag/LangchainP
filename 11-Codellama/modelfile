@@ -1,6 +1,6 @@
 FROM codellama
 
-## Set the Temperature
+## Set the Temperature 
 PARAMETER temperature 1 
 
 ## set the system prompt
