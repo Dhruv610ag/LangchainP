@@ -3,14 +3,12 @@ import os
 import sys
 import boto3
 import streamlit as st
-#This is the entire api request which we have to call in order to use any model in the Amazon bedrock 
-
-## We will be suing Titan Embeddings Model To generate Embedding
+## We will be using Titan Embeddings Model To generate Embedding
 #we need to go to the model access and request for thr model we will be using and always select us-east-1 or us-west-2 as they have many models just request them and take the access
 #in terminal me need to write the aws configure and it will ask for the ids we need to provide that id's to it  also area and jason ka bhi puchenge vo bhi batana hai 
 
 from langchain_community.embeddings import BedrockEmbeddings
-from langchain.llms.bedrock import Bedrock
+from langchain.llms.bedrock import Bedrock 
 
 ## Data Ingestion
 
@@ -24,7 +22,7 @@ from langchain.vectorstores import FAISS
 
 ## LLm Models
 from langchain.prompts import PromptTemplate
-from langchain.chains import RetrievalQA
+from langchain.chains import RetrievalQA # as we are making the Q&A so this is used 
 
 ## Bedrock Clients
 bedrock=boto3.client(service_name="bedrock-runtime")
@@ -54,13 +52,14 @@ def get_vector_store(docs):
 
 def get_claude_llm():
     ##create the Anthropic Model
+    #Actually they have created a wrapper and internally they will invoke that specific model But this is the way that you can use this framework like Langchain in a generic way 
     llm=Bedrock(model_id="ai21.j2-mid-v1",client=bedrock,
                 model_kwargs={'maxTokens':512})
     
     return llm
 
 def get_llama2_llm():
-    ##create the Anthropic Model
+    ##create the meta llama-2 model  Model
     llm=Bedrock(model_id="meta.llama2-70b-chat-v1",client=bedrock,
                 model_kwargs={'max_gen_len':512})
     
@@ -69,8 +68,8 @@ def get_llama2_llm():
 prompt_template = """
 
 Human: Use the following pieces of context to provide a 
-concise answer to the question at the end but usse atleast summarize with 
-250 words with detailed explaantions. If you don't know the answer, 
+concise answer to the question at the end but use atleast summarize with 
+250 words with detailed explanations. If you don't know the answer, 
 just say that you don't know, don't try to make up an answer.
 <context>
 {context}
