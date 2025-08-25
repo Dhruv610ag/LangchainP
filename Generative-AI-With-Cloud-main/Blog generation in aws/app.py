@@ -15,7 +15,6 @@ def blog_generate_using_bedrock(blogtopic:str)-> str:
         "temperature":0.5,
         "top_p":0.9
     }
-# it is the main part of calling the foundation model down from bedrock..invoke_model
     try:
         bedrock=boto3.client("bedrock-runtime",region_name="us-east-1",
                              config=botocore.config.Config(read_timeout=300,retries={'max_attempts':3}))
@@ -65,7 +64,8 @@ def lambda_handler(event, context):
     }
 
     
-
-
+#so isko Lamba function Aws Lambda Bedrock me jaa ke paste kar denge and ek nayi nayi Layer pe Add layer kare Python -3.12 version me pip install   boto3 -p python/ zip file create karke 
+#then usko Add kar denge fir Amazon API Gateway open karenge 
+#https api ko activate karenge and then routes set karenge
 
 
