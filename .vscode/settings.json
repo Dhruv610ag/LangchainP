@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "crewai",
         "dotenv",
         "FAISS",
         "fastapi",
@@ -17,6 +18,7 @@
         "repsonse",
         "selectbox",
         "streamlit",
-        "uvicorn"
+        "uvicorn",
+        "verboe"
     ]
 }
