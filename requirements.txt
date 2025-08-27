@@ -31,3 +31,6 @@ pytube
 numexpr
 huggingface_hub
 langchain_core
+pinecone-client 
+pinecone-text 
+pinecone-notebooks
