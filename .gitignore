@@ -3,3 +3,5 @@
 .mypy_cache
 .vscode
 /Genai
+/graph
+graphdb/graph1
