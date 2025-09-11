@@ -1,0 +1,13 @@
+faiss-cpu
+streamlit
+langchain
+langchain-groq
+langchain-community
+langchain-huggingface
+wikipedia
+arxiv
+langchainhub
+groq
+cassio
+beautifulsoup4
+langchain-ollama
